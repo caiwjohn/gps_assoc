@@ -1,0 +1,46 @@
+Gene	Annotation
+Potri.001G369100.1	cellulose synthase family protein; similar to cellulose synthase catalytic subunit (gi:13925881) from Nicotiana alata; similar to cellulose synthase-5 (gi:9622882) from Zea mays; similar to cellulose synthase; [ ortholog of At1g55850,]
+Potri.001G369100.2	cellulose synthase family protein; similar to cellulose synthase catalytic subunit (gi:13925881) from Nicotiana alata; similar to cellulose synthase-5 (gi:9622882) from Zea mays; similar to cellulose synthase; [ ortholog of At1g55850,]
+Potri.006G106400.1	similar to pentatricopeptide (PPR) repeat-containing protein; [ ortholog of At2g38420,]
+Potri.006G106400.2	similar to pentatricopeptide (PPR) repeat-containing protein; [ ortholog of At2g38420,]
+Potri.006G110000.1	protein kinase family protein; similar to protein kinase domain containing protein; [ co-ortholog (1of2) of At3g51550, ]
+Potri.006G160400.1	similar to tesmin/TSO1-like CXC domain-containing protein; similar to SP|Q9Y4I5|Tesmin Metallothionein (like-5 ; similar to testis-specific) {Homo sapiens}; [ co-ortholog (1of3) of At4g29000, At2g20110, At5g25790, ]
+Potri.006G160400.2	similar to tesmin/TSO1-like CXC domain-containing protein; similar to SP|Q9Y4I5|Tesmin Metallothionein (like-5 ; similar to testis-specific) {Homo sapiens}; [ co-ortholog (1of3) of At4g29000, At2g20110, At5g25790, ]
+Potri.006G160400.3	similar to tesmin/TSO1-like CXC domain-containing protein; similar to SP|Q9Y4I5|Tesmin Metallothionein (like-5 ; similar to testis-specific) {Homo sapiens}; [ co-ortholog (1of3) of At4g29000, At2g20110, At5g25790, ]
+Potri.006G160400.4	similar to tesmin/TSO1-like CXC domain-containing protein; similar to SP|Q9Y4I5|Tesmin Metallothionein (like-5 ; similar to testis-specific) {Homo sapiens}; [ co-ortholog (1of3) of At4g29000, At2g20110, At5g25790, ]
+Potri.006G178100.1	similar to hypothetical protein; [ ortholog of At5g61920,]
+Potri.006G204700.1	aspartyl protease family protein; [ co-ortholog (1of2) of At3g52500, ]
+Potri.006G205500.1	similar to hypothetical protein; [ co-ortholog (2of2) of At3g52540, At2g36050, At3g52550, ]
+Potri.006G205700.1	ubiquitin-conjugating enzyme family protein; similar to DNA-binding protein CROC-1B (Homo sapiens) GI:1066082; ubiquitin-conjugating enzyme family protein; similar to DNA-binding protein CROC-1B; [ co-ortholog (2of2) of At3g52560, At2g36060, ]
+Potri.008G084800.2	similar to diminuto. [ORG:Pyrus pyrifolia]; [ co-ortholog (2of3) of AAK15493, AAF78521, T06575, At3g19820, P93472, BAA13096, ]
+Potri.008G111100.1	cytidine/deoxycytidylate deaminase family protein; [ co-ortholog (1of2) of At1g68720, ]
+Potri.011G138200.1	calcineurin-like phosphoesterase family protein; [ co-ortholog (2of2) of At3g20500, ]
+Potri.014G109800.1	similar to putative cathepsin B-like protease. [ORG:Pisum sativum]; [ co-ortholog (2of3) of At1g02300, At4g01610, CAB62588, CAB62589, At1g02305, ]
+Potri.014G113600.1	transferase family protein; similar to low similarity to Taxus cuspidata transferases: 10-deacetylbaccatin III-10-O-acetyl transferase GI:6746554; similar to taxadienol acetyl transferase GI:6978038; similar to 2-debenzoyl-7; similar to 13-diacetylbaccati
+Potri.003G047800.1	PTHR32295:SF10 - CALMODULIN-BINDING FAMILY PROTEIN (1 of 2)
+Potri.003G106100.1	PTHR13994:SF10 - MUTT/NUDIX-LIKE PROTEIN-RELATED (1 of 3)
+Potri.003G204400.1	PTHR23334 - CCAAT/ENHANCER BINDING PROTEIN (1 of 4)
+Potri.004G005000.1	PTHR10795:SF390 - SUBTILISIN-LIKE SERINE PROTEASE (1 of 2)
+Potri.004G057900.1	PTHR31314:SF10 - HOMEODOMAIN-LIKE SUPERFAMILY PROTEIN-RELATED (1 of 4)
+Potri.007G056000.1	PTHR27002:SF139 - CYSTEINE-RICH RECEPTOR-LIKE PROTEIN KINASE 43-RELATED (1 of 1)
+Potri.007G102300.1	PTHR10795//PTHR10795:SF362 - PROPROTEIN CONVERTASE SUBTILISIN/KEXIN // SUBFAMILY NOT NAMED (1 of 8)
+Potri.008G025300.1	PTHR14155:SF145 - RING-H2 FINGER PROTEIN ATL61-RELATED (1 of 2)
+Potri.008G025800.1	PTHR23257//PTHR23257:SF549 - SERINE-THREONINE PROTEIN KINASE // SUBFAMILY NOT NAMED (1 of 2)
+Potri.008G025900.1	PTHR10359:SF28 - TRANSCRIPTIONAL ACTIVATOR DEMETER (1 of 2)
+Potri.008G052800.1	PTHR11941//PTHR11941:SF84 - ENOYL-COA HYDRATASE-RELATED // SUBFAMILY NOT NAMED (1 of 4)
+Potri.008G084600.1	PTHR23076:SF44 - ATP-DEPENDENT ZINC METALLOPROTEASE FTSH 12, CHLOROPLASTIC (1 of 2)
+Potri.009G069600.1	PF01535//PF12854//PF13041 - PPR repeat (PPR)  // PPR repeat (PPR_1)  // PPR repeat family (PPR_2)  (1 of 35)
+Potri.009G101800.1	PTHR12560:SF12 - LAG1 LONGEVITY ASSURANCE HOMOLOG 2 (1 of 2)
+Potri.011G016100.1	PF12796 - Ankyrin repeats (3 copies) (Ank_2)  (1 of 163)
+Potri.014G098600.1	PTHR12601:SF17 - TETRATRICOPEPTIDE REPEAT-CONTAINING PROTEIN (1 of 2)
+Potri.014G111400.1	K12126 - phytochrome-interacting factor 3 (PIF3)  (1 of 3)
+Potri.014G171800.1	PTHR22572:SF101 - GLUCOSE-1-PHOSPHATE ADENYLYLTRANSFERASE SMALL SUBUNIT, CHLOROPLASTIC (1 of 1)
+Potri.015G025500.1	PF12734 - Cysteine-rich TM module stress tolerance (CYSTM)  (1 of 13)
+Potri.015G034200.1	PTHR30540//PTHR30540:SF34 - OSMOTIC STRESS POTASSIUM TRANSPORTER // SUBFAMILY NOT NAMED (1 of 3)
+Potri.015G072800.1	PTHR15141:SF52 - BAH AND TFIIS DOMAIN-CONTAINING PROTEIN (1 of 4)
+Potri.015G072900.1	PTHR15141:SF52 - BAH AND TFIIS DOMAIN-CONTAINING PROTEIN (1 of 4)
+Potri.015G078300.1	K19330 - run domain Beclin-1 interacting and cysteine-rich containing protein (KIAA0226)  (1 of 1)
+Potri.016G083800.1	PTHR11715:SF1 - GLYCINE CLEAVAGE SYSTEM H PROTEIN 3, MITOCHONDRIAL (1 of 3)
+Potri.016G088900.1	PTHR33597:SF4 - CONSERVED PEPTIDE UPSTREAM OPEN READING FRAME 47 (1 of 3)
+Potri.017G073200.1	K05954 - protein farnesyltransferase subunit beta (FNTB)  (1 of 1)
+Potri.018G036800.1	PTHR23023:SF37 - INDOLE-3-PYRUVATE MONOOXYGENASE YUCCA2-RELATED (1 of 4)
