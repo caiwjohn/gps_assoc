@@ -1,4 +1,3 @@
-library(adegenet)
 library(SNPRelate)
 library(ggplot2)
 library(tidyverse)
@@ -44,7 +43,7 @@ saveRDS(pca, "./pca_0.2.rds")
 # INTERPRET PCA
 ######
 # Load PCA obj
-pca<- readRDS("../local_data/pca_0.1.rds")
+pca<- readRDS("../local_data/pca_above10_coreSamples_reducedSNP.RDS")
 
 # Load covariates
 covar<- readRDS("../local_data/clean_pheno.RDS")
@@ -100,7 +99,6 @@ for (garden in unique(covar$garden)) {
   }
 }
 #####
-
 #####
 # SINGLE PCA
 #####
@@ -109,22 +107,32 @@ river<- read.table(file="../local_data/river.txt", sep="\t")
 colnames(river)<- c("Genotype_ID", "river_class")
 river$river_class<- as.factor(river$river_class)
 
+# Load structure population data
+struct<- readRDS("../local_data/struct_pop.RDS")
+struct<- struct[,c(1,4,5)]
+
+## Perform this if sample ID's differ
+tab$sample.id<- mgsub(tab$sample.id, "\\.", "-")
+
 # Merge into one df for plotting
 snp<- merge(river, tab, by.x = "Genotype_ID", by.y= "sample.id")
 
 # Remove duplicates
 snp <- snp[which(duplicated(snp$Genotype_ID)==FALSE),]
 
+# Combine PCA data and structure pops
+snp<- merge(snp, struct, by.x = "Genotype_ID", by.y = "GenotypeID")
+
 # PC Plot using ggplot
-ggplot(data= snp, aes(PC1, PC2, colour=river_class)) +
+ggplot(data= snp, aes(PC1, PC2, colour=River)) +
   geom_point() +
-  ylab("PC2 (0.47% Var Explained)") +
-  xlab("PC1 (0.73% Var Explained)") +
-  ggtitle("Genotype PCA") +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.text = element_text(size=12),
-        legend.title = element_text(size = 12)) +
-  scale_colour_discrete(name="River System",
-                        labels=c("Non-Columbia", "Columbia"))
+  ylab("PC2 (2.08% Var Explained)") +
+  xlab("PC1 (91.61% Var Explained)") +
+  ggtitle("Genotype PCA", subtitle="GEMMA SNPs above 10: ends removed") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), plot.subtitle= element_text(hjust=0.5), 
+        legend.text = element_text(size=12), legend.title = element_text(size = 12)) +
+  scale_colour_discrete(name="River System")#,
+                        #labels=c("Non-Columbia", "Columbia"))
 
 # Pairwise PC 1-4
 lbls <- paste("PC", 1:4, "\n", format(pc.percent[1:4], digits=2), "%", sep="")

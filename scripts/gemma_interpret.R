@@ -6,13 +6,13 @@ library(rematch2)
 ## Make sure server folder is mounted!!
 
 # Define path to results csv
-fn<- "../cades/columbia_gemma/columbia.csv"
+fn<- "../cades/gps_assoc/gwas/columbia_gemma/columbia.csv"
 
 # Define file-saving analysis prefix
-save_tag<- "columbia"
+save_tag<- "relaxed"
 
 #####
-# SELECT STRINGENT SIGSNPS AND SAVE FOR FURTHER USE
+# SELECT SIGSNPS AND SAVE FOR FURTHER USE
 #####
 # Load GWAS results
 gwas<- read.table(fn, header=TRUE, sep=",")
@@ -22,16 +22,20 @@ pval<- 0.05/8300000
 man_cutoff<- -log10(pval)
 
 # Isolate sig SNPs
-sig<- gwas[which(gwas$P.value<pval),]
+#sig<- gwas[which(gwas$P.value<pval),]
 
 # Isolate unique gene IDs
 id<- as.data.frame(unique(sig$Gene.ID))
 
+# !
+# Remove scaffold SNPs prior to saving
+# !
+
 # Save
-saveRDS(sig, file=paste0("../output/", save_tag, "_sigSNPs.RDS"))
+saveRDS(sig, file=paste0("../output/", save_tag, "_SNPs.RDS"))
 
 # Save GeneIDs
-write.table(sig$Gene.ID, file=paste0("../output/", save_tag, "_sig_geneID.txt"), quote=FALSE, row.names = FALSE)
+write.table(id, file=paste0("../output/", save_tag, "_geneID.txt"), quote=FALSE, row.names = FALSE)
 
 #####
 # COMPARE SELECTED SNPs AND LASSO TRANSCRIPTS
@@ -49,24 +53,24 @@ write.table(overlap, file=paste0("../output/", save_tag, "_transcript_snp_overla
 #####
 # BUILD SCRIPT TO EXTRACT SNPS FROM VCF TO HARVEST EFFECT TERM
 #####
-sig<- readRDS("../output/lat_sigSNPs.RDS")
+sig<- readRDS(paste0("../output/", save_tag, "_SNPs.RDS"))
 
 # Remove duplicate positions
 sig<- sig[-which(duplicated(sig[,1:2])),]
 
 # Create df
-extract_sig<- data.frame(command= rep(NA, nrow(sig)))
+extract_sig<- data.frame(command= rep(NA, nrow(sig)+1))
 
 # Make first command
-extract_sig$command[1]<- paste0("zgrep -P '", sig$Chr[1],"\\t",sig$Pos[1],"' ", sig$Chr[1], "_besc_filter.vcf > sigSNPs.vcf")
+extract_sig$command[1]<- paste0("zgrep -P '#CHROM' Chr01_besc_filter.vcf > ", save_tag, "_SNPs.vcf")
 
 # Iterate thru all
-for (snp in 2:nrow(sig)) {
-  extract_sig$command[snp]<- paste0("zgrep -P '", sig$Chr[snp],"\\t",sig$Pos[snp],"' ", sig$Chr[snp], "_besc_filter.vcf >> sigSNPs.vcf")
+for (snp in 1:nrow(sig)) {
+  extract_sig$command[snp+1]<- paste0("zgrep -P '", sig$Chr[snp],"\\t",sig$Pos[snp],"' ", sig$Chr[snp], "_besc_filter.vcf >> ", save_tag, "_SNPs.vcf")
 }
 
 # Save as bash script
-write.table(extract_sig, file = "../cades/extract_sig.sh", quote=FALSE, row.names = FALSE, col.names = FALSE)
+write.table(extract_sig, file = paste0("../cades/",save_tag, "_extract.sh"), quote=FALSE, row.names = FALSE, col.names = FALSE)
 
 #####
 # LABEL EFFECT OF EXTRACTED SNPS

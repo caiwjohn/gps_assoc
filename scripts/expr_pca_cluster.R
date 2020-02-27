@@ -52,9 +52,9 @@ ggplot(data= pc, aes(V1, V2, colour= river_class))+
   theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.text = element_text(size=12),
         legend.title = element_text(size = 12))
 
-####
+#####
 # Auto decomposition
-####
+#####
 # Isolate expression data and compute
 pca_results <- expr[,7:ncol(annotated_dat)] %>%
   prcomp(scale=F, center= T, tol= 0.01)

@@ -1,0 +1,5 @@
+SNP	SNP10kb_GeneID	SNP10kb_AtGeneID	SNP10kb_AtGeneName	SNP10kb_At_Anno	SNP10kb_At_TFfamily	SNP10kb_Pt_TFfamily
+6-1656-SNP13	Potri.006G000100	AT2G01050.1	-	zinc ion binding;nucleic acid binding	-	-
+6-22501-SNP342	Potri.006G000200	AT2G44200.1	-	CBF1-interacting co-repressor CIR, N-terminal;Pre-mRNA splicing factor	-	-
+6-22501-SNP342	Potri.006G000300	AT1G07410.1	ATRAB-A2B,ATRABA2B,RAB-A2B,RABA2b	RAB GTPase homolog A2B	-	-
+6-22734-SNP348	Potri.006G000400	AT2G44190.1	EDE1	Family of unknown function (DUF566) 	-	-

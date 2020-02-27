@@ -9,7 +9,7 @@ theme_set(theme_gray(base_size = 18))
 struc<- read.table("../local_data/structure/run_k.2.meanQ")
 
 # Load bed file to determine sample order
-samples<- read.table("../cades/lat_2_gemma/temp_bed/Chr01_besc_filter.fam")
+samples<- read.table("../cades/gwas/lat_2_gemma/temp_bed/Chr01_besc_filter.fam")
 
 # Combine sample labels and pops
 struc<- cbind(samples[,1], struc)
@@ -25,22 +25,25 @@ pheno<- readRDS("../local_data/clean_pheno.RDS") %>%
 # Merge river system in data
 pops<- merge(struc, pheno, by.x = "GenotypeID", by.y= "Genotype_ID")
 
-# Pred river system based on population
-pops$River_Pred[pops$Pop2 > 0.75]<- "Columbia"
-pops$River_Pred[pops$Pop1 > 0.75]<- "non-Columbia"
-length(which(is.na(pops$River_Pred)==TRUE))
-pops<- pops[which(!is.na(pops$River_Pred)),]
+# Pred river system based on STRUCTURE population
+pops$Struct_Pred[pops$Pop2 > 0.75]<- "Columbia"
+pops$Struct_Pred[pops$Pop1 > 0.75]<- "non-Columbia"
+pops$Struct_Pred[which(is.na(pops$Struct_Pred))] <- "Mixed"
 
 # Replace River labels to match predictions
+## Make sure textclean package isn't loaded, there are two mgsub functions
 pops$River<- as.character(pops$River)
 pops$River<- mgsub(pops$River, pattern=c("Puyallup", "Puyallup_Carbon", "Skyomish", "Skagit", "Skykomish"), 
                          replacement = c("non-Columbia"), recycle=T)
 
-# Drop rows with no classification
+# Drop rows with no true river classification
 pops<- pops[which(pops$River!=""),]
 
+# Save data obj
+saveRDS(pops, "../local_data/struct_pop.RDS")
+
 # Determine accuracy of prediction method
-acc<- length(which(pops$River==pops$River_Pred))/nrow(pops)
+acc<- length(which(pops$River==pops$Struct_Pred))/nrow(pops)
 colnames(pops)[4:5]<- c("River System", "STRUCTURE Population")
 
 # Create Venn Diagram of relationship
