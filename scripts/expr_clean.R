@@ -73,9 +73,9 @@ for(i in 2:(num_groups-1)){
 annotated_dat$lat_group[annotated_dat$Latitude>=(lat_start+((num_groups-1)*quar_width))]<-num_groups
 annotated_dat$lat_group<- as.factor(annotated_dat$lat_group)
 
-###
+#####
 # Visually Partition
-###
+#####
 # Visualize latitudinal groups to manually separate
 ggplot(annotated_dat, aes(Latitude, rep(1, nrow(annotated_dat)))) +
   geom_point()+

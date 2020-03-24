@@ -11,26 +11,28 @@ library(randomForest)
 # PREP DATA FOR PREDICTION
 #####
 # Load
-expr<- readRDS("../local_data/core_Expression.RDS")
-
-# Drop Mixed
-expr<- expr[which(expr$Struct_Pred!="Mixed"),]
-expr$numeric_class<- as.numeric(as.character(expr$numeric_class))
+expr<- readRDS("../clean_data/modelData.RDS")
 
 # Build training and validation sets
-model_dat <- expr%>%
+model_dat <- expr %>%
   as_tibble() %>%
-  group_by(numeric_class)
+  group_by(class)
 
 # Shuffle the order of samples
 model_dat <- model_dat[sample(nrow(model_dat)),]
 
 # OPTIONAL: shuffle class labels
-#model_dat<- transform(model_dat, numeric_class= sample(numeric_class))
+#model_dat<- transform(model_dat, numeric_class= sample(numeric_class)) %>%
+#  as_tibble() %>%
+#  group_by(numeric_class)
+  
+# See how many of each class we have
+length(which(model_dat$numeric_class==0))
+length(which(model_dat$numeric_class==1))
 
 # Select training and validation
-train<- sample_n(model_dat, 44)
-test<- model_dat[which(!(model_dat$Genotype_ID %in% train$Genotype_ID)),]
+train<- sample_n(model_dat, 200)
+test<- model_dat[which(!(model_dat$GenotypeID %in% train$GenotypeID)),]
 
 # Isolate predictors and responses
 train_resp<- as.factor(as.matrix(train[,c("numeric_class")]))
@@ -62,7 +64,7 @@ features <- data.frame(
 
 # OPTIONAL: Save list of selected features
 features<- features[-c(1),]
-write.table(features$features, file ="../output/LASSO_noMixed/sel_transcripts.txt" , 
+write.table(features$features, file ="../viz_results/sel_transcripts.txt" , 
             sep="\t", row.names=FALSE, quote = FALSE)
 
 # Predict classes for held-out data

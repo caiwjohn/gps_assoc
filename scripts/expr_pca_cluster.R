@@ -1,6 +1,7 @@
 library(tidyverse)
 library(useful)
 library(ggfortify)
+library(mgsub)
 theme_set(theme_gray(base_size = 18))
 
 #####
@@ -8,64 +9,45 @@ theme_set(theme_gray(base_size = 18))
 #####
 # Load data
 annotated_dat<- readRDS("../local_data/leaf_expr_lat_groups.RDS")
-river<- read.table(file="../local_data/river.txt", sep="\t")
-colnames(river)<- c("Genotype_ID", "river_class")
+samples<- readRDS("../local_data/sampleSet_RNA.RDS")
+
+# Change class label to a factor string
+samples$numeric_class<- samples$river_class
+samples$river_class<- as.character(samples$river_class)
+samples$river_class<- mgsub(samples$river_class, c("1", "0"), c("Columbia", "non-Columbia"))
+
+# Tidy samples
+samples<- samples[,c(1:3, 7, 4:6)]
+
+# Drop old annotations
+annotated_dat<- annotated_dat[,-c(2,3,4,5)]
 
 # Match genotype labels
 annotated_dat$Genotype_ID<- gsub("\\.", "-", annotated_dat$Genotype_ID)
 
 # Merge river class into expression data
-expr<- merge(river, annotated_dat, by.x = "Genotype_ID", by.y = "Genotype_ID")
+expr<- merge(samples, annotated_dat)
 expr$river_class<- as.factor(expr$river_class)
 
+# Save as core expression data
+saveRDS(expr, "../local_data/core_Expression.RDS")
 
-# N.B.
-## This expression data object has only samples that have valid river labels
-
-###
-# Manual Decomposition
-###
-# Isolate numeric data
-num_dat<- expr[,7:ncol(expr)]
-rownames(num_dat)<- expr$Genotype_ID
-
-# Decompose and isolate components
-decomp<- svd(num_dat)
-d<- decomp[[1]]
-u<- decomp[[2]]
-v<- decomp[[3]]
-
-# Compute total variance
-total_var<- sum(d**2)
-
-# Construct PCs
-pc<- u %*% diag(d)
-pc<- as.data.frame(pc)
-
-# Join annotations to PCs
-pc<- cbind(expr[,c("Genotype_ID", "river_class", "bud_flush", "bud_set")], pc)
-
-# Visualize results
-ggplot(data= pc, aes(V1, V2, colour= river_class))+
-  geom_point() +
-  labs(colour="River System", title= "Leaf Expression PCA", x= "PC1", y="PC2")+
-  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.text = element_text(size=12),
-        legend.title = element_text(size = 12))
+# Drop samples with Mixed label
+expr<- expr[which(expr$Struct_Pred!="Mixed"),]
 
 #####
 # Auto decomposition
 #####
 # Isolate expression data and compute
-pca_results <- expr[,7:ncol(annotated_dat)] %>%
+pca_results <- expr[,8:ncol(expr)] %>%
   prcomp(scale=F, center= T, tol= 0.01)
 
 # Visualize PCA
 autoplot(pca_results, data= expr, label= F, colour= "river_class") +
-  labs(colour="River System", title= "Leaf Expression PCA") +
-  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.text = element_text(size=12),
-        legend.title = element_text(size = 12)) +
-  scale_colour_discrete(name="River System",
-                      labels=c("Non-Columbia", "Columbia"))
+  labs(colour="River System", title= "Leaf Expression PCA", subtitle = "Mixed Samples Removed") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), plot.subtitle= element_text(hjust=0.5), 
+        legend.text = element_text(size=12), legend.title = element_text(size = 12)) +
+  scale_colour_discrete(name="River System")
 
 # Reduce transcripts to those selected from prediction
 red_trans<- expr[,which(colnames(expr) %in% features$features)]
@@ -74,13 +56,43 @@ red_trans<- expr[,which(colnames(expr) %in% features$features)]
 pca_results <- red_trans %>%
   prcomp(scale=F, center= T, tol= 0.01)
 
-# Visualize PCA
-autoplot(pca_results, data= expr, label= F, colour= "river_class") +
-  labs(colour="River System", title= "Leaf Expression PCA", subtitle= "Transcripts selected in LASSO Prediction") +
+# Combine pca with traits
+plotDat<- cbind(pca_results$x, expr[,c(1, 3)])
+
+# Visualize single dimensional PCA
+ggplot(data= plotGene, aes(seq_along(Genotype_ID), red_trans, colour= river_class))+
+  geom_point() +
+  labs(x= "Samples", y= "Potri.010G079500" ,colour="River System", title= "Leaf Expression", subtitle= "LASSO Transcript, Core Samples") +
   theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.text = element_text(size=12),
         legend.title = element_text(size = 12), plot.subtitle = element_text(hjust = 0.5)) +
-  scale_colour_discrete(name="River System",
-                        labels=c("Non-Columbia", "Columbia"))
+  scale_colour_discrete(name="River System")
+
+# Visualize PCA
+autoplot(pca_results, data= expr, label= F, colour= "river_class", loadings=F, loadings.label=F, scale=0) +
+  labs( colour="River System", title= "Leaf Expression PCA", subtitle= "LASSO Transcripts, Core Samples") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.5), legend.text = element_text(size=12),
+        legend.title = element_text(size = 12), plot.subtitle = element_text(hjust = 0.5)) +
+  scale_colour_discrete(name="River System")
+
+# Extract samples that are mislabeled
+pc<- as.data.frame(pca_results$x[,1:2])
+pc$samples<- expr$Genotype_ID
+pc$River<- expr$river_class
+
+# Get mislabeled columbia sample names
+colum_mislab<- as.data.frame(pc$samples[which(pc$PC1 < 1.35 & pc$River=="Columbia")])
+colnames(colum_mislab)<- c("samples")
+
+# Get non-Columbia mislabeled
+nonColum_mislab<- as.data.frame(pc$samples[which(pc$PC1 > 1.36 & pc$River=="non-Columbia")])
+colnames(nonColum_mislab)<- c("samples")
+
+# Combine
+mislabeled<- rbind(colum_mislab, nonColum_mislab)
+
+# Save mislabeled names
+write.table(mislabeled, "../output/rna/mislabeled_samples.txt", quote= F, row.names = F, col.names = F)
+
 #####
 # Hierarchical clustering
 #####
@@ -113,23 +125,6 @@ rect.hclust(hc, k = 6, border = 2:5)
 # Use GAP statistic method to determine optimal number of clusters
 ##gap_stat <- clusGap(num_dat, FUN = hcut, nstart = 25, K.max = 10, B = 50)
 ##fviz_gap_stat(gap_stat)
-
-#####
-# NMF
-#####
-library(NMF)
-
-## Comments 
-# 1. NMF scale samples by their mean value before log-transform, i.e. divide by its mean
-
-# Shift all data up by 20 to avoid negative numbers
-shifted<- num_dat+20
-
-# Factorize
-res<- nmf(shifted, rank=4)
-
-# Visualize
-basismap(res, subsetRow=TRUE)
 
 
 
